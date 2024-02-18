@@ -19,7 +19,7 @@ describe("Event Ease tests", () => {
       });
     it("Login with existing account", () => {
       cy.request("POST", "http://localhost:3030/api/users/login", {
-        email:"nithish10@gmail.com",
+        email:"nithish18@gmail.com",
         password:"123456789"
       })
         .its("status")
