@@ -7,7 +7,6 @@ env:
 jobs:
   run-tests:
     runs-on: ubuntu-latest
-
     services:
       postgres:
         image: postgres:11.7
@@ -22,18 +21,14 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-
       - name: Install dependencies
         run: cd backend && npm ci
-
       - name: Run unit tests
         id: unit-tests
         run: cd backend && npm test
-
       - name: Run the app
         id: run-app
         run: |
@@ -44,16 +39,22 @@ jobs:
           npx sequelize-cli db:migrate
           PORT=3000 npm start &
           sleep 5
-
       - name: Run integration tests
         id: integration-tests
         run: |
           cd backend
           npm install cypress cypress-json-results
           npx cypress run
-
- 
-
+  deploy:
+    name: Auto deployment
+    needs: [run-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Backend deploy to Render
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.SERVICE_ID }}
+          api-key: ${{ secrets.EVENTEASE_API }}
   notifications:
     needs: [run-tests]
     runs-on: ubuntu-latest
