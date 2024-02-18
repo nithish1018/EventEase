@@ -8,7 +8,7 @@ describe("Event Ease tests", () => {
     });
 
   
-    it("Create a new post", () => {
+    it("Create a new Account", () => {
         cy.request("POST", "http://localhost:3030/api/users/signup", {
             name:"Nithish",
             email:"nithish18@gmail.com",
@@ -17,7 +17,7 @@ describe("Event Ease tests", () => {
           .its("status")
           .should("eq", 200);
       });
-    it("Create a new post", () => {
+    it("Login with existing account", () => {
       cy.request("POST", "http://localhost:3030/api/users/login", {
         email:"nithish18@gmail.com",
         password:"123456789"
