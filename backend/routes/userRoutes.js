@@ -10,7 +10,7 @@ const validator = require("validator")
 const createToken = (id) => {
     return jwt.sign({ id }, process.env.SECRET, { expiresIn: '3d' })
 }
-
+// signup API
 router.post("/signup", async (req, res) => {
     if (!req.body.name || !req.body.email || !req.body.password) {
         return res.status(400).json({ error: "All fields must be entered" });
