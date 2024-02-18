@@ -1,0 +1,70 @@
+name: Auto tests for EventEase
+on: push
+env:
+  PG_DATABASE: EventEase_database_test
+  PG_USER: postgres
+  PG_PASSWORD: ${{ secrets.DB_PWD }}
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:11.7
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ${{ secrets.DB_PWD }}
+          POSTGRES_DB: EventEase_database_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: cd backend && npm ci
+
+      - name: Run unit tests
+        id: unit-tests
+        run: cd backend && npm test
+
+      - name: Run the app
+        id: run-app
+        run: |
+          cd backend
+          npm install
+          npx sequelize-cli db:drop
+          npx sequelize-cli db:create
+          npx sequelize-cli db:migrate
+          PORT=3000 npm start &
+          sleep 5
+
+      - name: Run integration tests
+        id: integration-tests
+        run: |
+          cd backend
+          npm install cypress cypress-json-results
+          npx cypress run
+
+ 
+
+  notifications:
+    needs: [run-tests]
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    steps:
+      - name: Notify Slack
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SECRET_NAME }}
+        run: |
+          if [[ ${{ needs.run-tests.result }} == 'success' ]]; then
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"Workflow *Auto test  for EventEase* completed successfully. \nCheck the logs for details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' $SLACK_WEBHOOK_URL
+          else
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"Workflow *Auto test  for EventEase* failed.\nCheck the logs for details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' $SLACK_WEBHOOK_URL
+          fi
