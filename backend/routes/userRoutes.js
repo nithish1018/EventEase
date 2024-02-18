@@ -6,6 +6,7 @@ const { User } = require("../models")
 const bcrypt = require("bcrypt")
 const validator = require("validator")
 
+// creating jwt token
 const createToken = (id) => {
     return jwt.sign({ id }, process.env.SECRET, { expiresIn: '3d' })
 }
