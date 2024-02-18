@@ -1,15 +1,15 @@
 const express = require("express");
 const cors = require("cors")
 const userRoutes = require("./routes/userRoutes")
-const taskRoutes = require("./routes/eventRoutes")
+// const taskRoutes = require("./routes/eventRoutes")
 const app = express();
 
 app.use(cors())
 
 app.use(express.json());
 app.use("/api/users", userRoutes);
-app.use("/api/event", eventRoutes);
+// app.use("/api/event", eventRoutes);
 
-app.listen(process.env.PORT || 8080, () => {
-    console.log(`Started server on ${process.env.PORT || 3030}`);
-});
+
+
+module.exports = app;
