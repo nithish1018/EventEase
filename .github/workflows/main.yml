@@ -50,7 +50,7 @@ jobs:
     needs: [run-tests]
     runs-on: ubuntu-latest
     steps:
-      - name: Backend deploy to Render
+      - name: Backend deployment in Render
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
           service-id: ${{ secrets.SERVICE_ID }}
@@ -65,7 +65,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SECRET_NAME }}
         run: |
           if [[ ${{ needs.run-tests.result }} == 'success' && ${{ needs.deploy.result }} == 'success' ]]; then
-            curl -X POST -H 'Content-type: application/json' --data '{"text":"Workflow *Auto test for EventEase* completed successfully. \nCheck the logs for details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' $SLACK_WEBHOOK_URL
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"Automated tests for EventEase completed successfully. \nCheck the logs for details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' $SLACK_WEBHOOK_URL
           else
-            curl -X POST -H 'Content-type: application/json' --data '{"text":"Workflow *Auto test for EventEase* failed.\nCheck the logs for details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' $SLACK_WEBHOOK_URL
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"Automated tests for EventEase* failed.\nCheck the logs for details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' $SLACK_WEBHOOK_URL
           fi
