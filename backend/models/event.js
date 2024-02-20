@@ -10,8 +10,70 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Task.belongsTo(models.User, {
+        foreignKey: "userId",
+      });
     }
+    static addTask({ title, startTime, endTime, userID }) {
+      return this.create({
+        title,
+        startTime,
+        endTime,
+        userID,
+      });
+    }
+
+    static removeTask({ id, userID }) {
+      return this.destroy({
+        where: {
+          id,
+          userID,
+        },
+      });
+    }
+
+    static getTasks(userID) {
+      return this.findAll({
+        where: {
+          userID,
+        },
+        order: [["id", "ASC"]],
+      });
+    }
+
+    static getTaskAtSlot({ startTime, endTime, userID }) {
+      return this.findOne({
+        where: {
+          startTime,
+          endTime,
+          userID
+        },
+      });
+    }
+
+    static getTask({ userID, id }) {
+      return this.findOne({
+        where: {
+          userID,
+          id,
+        },
+      });
+    }
+
+    static async updateTask({ title, id, userID }) {
+      return this.update(
+        {
+          title,
+        },
+        {
+          where: {
+            id,
+            userID
+          },
+        }
+      );
+    }
+
   }
   Event.init({
     title: DataTypes.STRING,
