@@ -1,2 +1,6 @@
 node_modules
 .env
+newsshKey
+newsshKey.pub
+sshKey
+sshKey.pub

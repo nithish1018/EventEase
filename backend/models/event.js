@@ -14,12 +14,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
       });
     }
-    static addTask({ title, startTime, endTime, userID }) {
+    static addTask({ title, startTime, endTime, userId }) {
       return this.create({
         title,
         startTime,
         endTime,
-        userID,
+        userId,
       });
     }
 
