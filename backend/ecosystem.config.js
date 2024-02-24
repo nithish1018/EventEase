@@ -1,13 +1,16 @@
 module.exports = {
   apps: [
     {
-      name: "your-app-name",
-      script: "app.js", // or the entry point to your application
-      instances: "max", // "max" will use as many instances as available CPU cores
-      exec_mode: "cluster", // enable clustering
+      name: "EventEase",
+      script: "index.js",
+      instances: "max",
+      exec_mode: "cluster",
       env: {
         NODE_ENV: "production",
-        PORT: 3000, // Set the port your application should listen to
+      },
+      env_production: {
+        NODE_ENV: "production",
+        PORT: 3000,
       },
     },
   ],
