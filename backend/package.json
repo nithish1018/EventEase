@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
+    "dev": "npx pm2 start index.js --name 'EventEase' -i 4 --wait-ready --no-autorestart",
     "start:prod": "node index.js",
     "test": "NODE_ENV=test jest --detectOpenHandles",
     "pretest": "NODE_ENV=test npx sequelize-cli db:drop && NODE_ENV=test npx sequelize-cli db:create && NODE_ENV=test npx sequelize-cli db:migrate",
