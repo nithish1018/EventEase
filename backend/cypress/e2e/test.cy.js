@@ -1,6 +1,6 @@
 describe("Event Ease tests", () => {
     beforeEach(() => {
-      cy.request("POST", "http://localhost:3030/api/users/signup", {
+      cy.request("POST", "http://localhost:4000/api/users/signup", {
          name:"Nithish",
         email:"nithish18@gmail.com",
         password:"123456789"
@@ -9,7 +9,7 @@ describe("Event Ease tests", () => {
 
   
     it("Create a new Account", () => {
-        cy.request("POST", "http://localhost:3030/api/users/signup", {
+        cy.request("POST", "http://localhost:4000/api/users/signup", {
             name:"Nithish",
             email:"nithish18@gmail.com",
             password:"123456789"
@@ -18,7 +18,7 @@ describe("Event Ease tests", () => {
           .should("eq", 200);
       });
     it("Login with existing account", () => {
-      cy.request("POST", "http://localhost:3030/api/users/login", {
+      cy.request("POST", "http://localhost:4000/api/users/login", {
         email:"nithish18@gmail.com",
         password:"123456789"
       })
