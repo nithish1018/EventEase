@@ -65,7 +65,7 @@ jobs:
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/eventease:latest
   deploy:
     name: Auto deployment
-    needs: [run-tests]
+    needs: [docker]
     runs-on: ubuntu-latest
     steps:
       - name: Backend deployment in Render
