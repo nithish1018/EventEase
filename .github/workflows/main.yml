@@ -68,7 +68,7 @@ jobs:
         run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
 
       - name: Push Docker image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/my-node-app:latest
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/eventease:development
 
       - name: SSH Deploy
         uses: appleboy/ssh-action@master
