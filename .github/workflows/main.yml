@@ -1,16 +1,10 @@
-name: CI/CD Pipeline
-
-on:
-  push:
-    branches:
-      - main
-
+name: Auto tests for EventEase
+on: push
 env:
   PG_DATABASE: EventEase_database_test
   PG_USER: postgres
   PG_PASSWORD: ${{ secrets.DB_PWD }}
   SECRET: ${{ secrets.SECRET }}
-
 jobs:
   run-tests:
     runs-on: ubuntu-latest
@@ -53,35 +47,34 @@ jobs:
           cd backend
           npm install cypress cypress-json-results
           npx cypress run
-
-  build-and-deploy:
+  docker:
+    name: Docker image build
     needs: [run-tests]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v2
-
-      - name: Build Docker image
-        run: docker build -t my-node-app ./backend
 
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
 
-      - name: Push Docker image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/eventease:development
-
-      - name: SSH Deploy
-        uses: appleboy/ssh-action@master
+      - name: Build and Push Docker Image
+        run: |
+          cd backend
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/eventease:latest .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/eventease:latest
+  deploy:
+    name: Auto deployment
+    needs: [run-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Backend deployment in Render
+        uses: johnbeynon/render-deploy-action@v0.0.8
         with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            docker-compose -f docker-compose.yml pull
-            docker-compose -f docker-compose.yml up -d
-
+          service-id: ${{ secrets.SERVICE_ID }}
+          api-key: ${{ secrets.EVENTEASE_API }}
   notifications:
-    needs: [run-tests, build-and-deploy]
+    needs: [run-tests, deploy]
     runs-on: ubuntu-latest
     if: ${{ always() }}
     steps:
@@ -89,8 +82,8 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SECRET_NAME }}
         run: |
-          if [[ ${{ needs.run-tests.result }} == 'success' && ${{ needs.build-and-deploy.result }} == 'success' ]]; then
+          if [[ ${{ needs.run-tests.result }} == 'success' && ${{ needs.deploy.result }} == 'success' ]]; then
             curl -X POST -H 'Content-type: application/json' --data '{"text":"Automated tests for EventEase completed successfully. \nCheck the logs for details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' $SLACK_WEBHOOK_URL
           else
-            curl -X POST -H 'Content-type: application/json' --data '{"text":"Automated tests for EventEase failed.\nCheck the logs for details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' $SLACK_WEBHOOK_URL
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"Automated tests for EventEase* failed.\nCheck the logs for details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' $SLACK_WEBHOOK_URL
           fi
