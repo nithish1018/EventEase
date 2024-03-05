@@ -61,7 +61,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build Docker image
-        run: docker build -t my-node-app .
+        run: docker build -t my-node-app ./backend
 
       - name: Push Docker image to registry
         run: docker push my-node-app:latest
