@@ -1,4 +1,5 @@
 name: CI/CD Pipeline
+
 on:
   push:
     branches:
@@ -63,8 +64,11 @@ jobs:
       - name: Build Docker image
         run: docker build -t my-node-app ./backend
 
-      - name: Push Docker image to registry
-        run: docker push my-node-app:latest
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+
+      - name: Push Docker image to Docker Hub
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/my-node-app:latest
 
       - name: SSH Deploy
         uses: appleboy/ssh-action@master
