@@ -1,10 +1,15 @@
-name: Auto tests for EventEase
-on: push
+name: CI/CD Pipeline
+on:
+  push:
+    branches:
+      - main
+
 env:
   PG_DATABASE: EventEase_database_test
   PG_USER: postgres
   PG_PASSWORD: ${{ secrets.DB_PWD }}
   SECRET: ${{ secrets.SECRET }}
+
 jobs:
   run-tests:
     runs-on: ubuntu-latest
@@ -47,18 +52,32 @@ jobs:
           cd backend
           npm install cypress cypress-json-results
           npx cypress run
-  deploy:
-    name: Auto deployment
+
+  build-and-deploy:
     needs: [run-tests]
     runs-on: ubuntu-latest
     steps:
-      - name: Backend deployment in Render
-        uses: johnbeynon/render-deploy-action@v0.0.8
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build -t my-node-app .
+
+      - name: Push Docker image to registry
+        run: docker push my-node-app:latest
+
+      - name: SSH Deploy
+        uses: appleboy/ssh-action@master
         with:
-          service-id: ${{ secrets.SERVICE_ID }}
-          api-key: ${{ secrets.EVENTEASE_API }}
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker-compose -f docker-compose.yml pull
+            docker-compose -f docker-compose.yml up -d
+
   notifications:
-    needs: [run-tests, deploy]
+    needs: [run-tests, build-and-deploy]
     runs-on: ubuntu-latest
     if: ${{ always() }}
     steps:
@@ -66,8 +85,8 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SECRET_NAME }}
         run: |
-          if [[ ${{ needs.run-tests.result }} == 'success' && ${{ needs.deploy.result }} == 'success' ]]; then
+          if [[ ${{ needs.run-tests.result }} == 'success' && ${{ needs.build-and-deploy.result }} == 'success' ]]; then
             curl -X POST -H 'Content-type: application/json' --data '{"text":"Automated tests for EventEase completed successfully. \nCheck the logs for details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' $SLACK_WEBHOOK_URL
           else
-            curl -X POST -H 'Content-type: application/json' --data '{"text":"Automated tests for EventEase* failed.\nCheck the logs for details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' $SLACK_WEBHOOK_URL
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"Automated tests for EventEase failed.\nCheck the logs for details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' $SLACK_WEBHOOK_URL
           fi

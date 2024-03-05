@@ -4,7 +4,7 @@ services:
     build:
       context: .
       target: dev
-    image: eventease:development # Repository name should be lowercase
+    image: eventease:development 
     ports:
       - 4000:4000
     env_file:
