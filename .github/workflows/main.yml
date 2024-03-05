@@ -74,7 +74,7 @@ jobs:
           service-id: ${{ secrets.SERVICE_ID }}
           api-key: ${{ secrets.EVENTEASE_API }}
   notifications:
-    needs: [run-tests, deploy,docker]
+    needs: [run-tests,docker,deploy]
     runs-on: ubuntu-latest
     if: ${{ always() }}
     steps:
@@ -82,7 +82,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SECRET_NAME }}
         run: |
-          if [[ ${{ needs.run-tests.result }} == 'success' && ${{ needs.deploy.result }} == 'success' && ${{ needs.docker.result }} == 'success']]; then
+          if [[ ${{ needs.run-tests.result }} == 'success' && ${{ needs.deploy.result }} == 'success' && ${{ needs.docker.result }} == 'success' ]]; then
             curl -X POST -H 'Content-type: application/json' --data '{"text":"Automated tests for EventEase completed successfully. \nCheck the logs for details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' $SLACK_WEBHOOK_URL
           else
             curl -X POST -H 'Content-type: application/json' --data '{"text":"Automated tests for EventEase* failed.\nCheck the logs for details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' $SLACK_WEBHOOK_URL
