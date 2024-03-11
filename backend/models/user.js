@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId"
       })
     }
-    static addUser({ name, email, password }) {
+    static addUser( name, email, password ) {
       return this.create({
         name,
         email,
