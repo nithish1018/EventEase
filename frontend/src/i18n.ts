@@ -10,7 +10,7 @@ i18n
         debug: true,
         resources: {
             en: { ...enJSON },
-            fr: { ...spaJSON },
+            spa: { ...spaJSON },
         },
         fallbackLng: "en",
     });
