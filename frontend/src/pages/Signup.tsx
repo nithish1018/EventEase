@@ -8,8 +8,7 @@ const Signup = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [signup, isPending, error, success] = useSignup();
-    // const signup: (name: string, email: string, password: string) => Promise<void> = useSignup();
+    const {signup, isLoading, error, success} = useSignup();
     const navigate = useNavigate();
 
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
@@ -31,8 +30,8 @@ const Signup = () => {
                 <input value={email} onChange={(e) => { setEmail(e.target.value) }} required type="email" id="email" className="border border-black hover:border-purple-500 focus:border-purple-500 w-full h-5 px-3 py-5 mb-2 hover:outline-none focus:outline-none focus:ring-purple-500 focus:ring-1 rounded-md text-black " />
                 <label htmlFor="password">Password: </label>
                 <input value={password} onChange={(e) => { setPassword(e.target.value) }} required type="password" id="endTime" className="border border-black hover:border-purple-500 focus:border-purple-500 w-full h-5 px-3 py-5 mb-2 hover:outline-none focus:outline-none focus:ring-purple-500 focus:ring-1 rounded-md text-black " />
-                {!isPending && <button className=" text-purple-800 transition-all w-full border border-purple-400 hover:bg-purple-400 hover:text-white py-3 rounded-md mt-6">Sign up</button>}
-                {isPending && <button disabled className="transition-all w-full border border-purple-400 bg-purple-400 cursor-not-allowed text-white py-3 rounded-md mt-6">Creating account...</button>}
+                {!isLoading && <button className=" text-purple-800 transition-all w-full border border-purple-400 hover:bg-purple-400 hover:text-white py-3 rounded-md mt-6">Sign up</button>}
+                {isLoading && <button disabled className="transition-all w-full border border-purple-400 bg-purple-400 cursor-not-allowed text-white py-3 rounded-md mt-6">Creating account...</button>}
             </form>
         </div>
     );

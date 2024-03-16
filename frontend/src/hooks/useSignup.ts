@@ -33,5 +33,5 @@ export const useSignup = () => {
             setIsLoading(false);
         }
     }
-    return [signup, isLoading, error, success];
+    return {signup, isLoading, error, success};
 }

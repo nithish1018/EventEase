@@ -6,7 +6,7 @@ services:
       target: dev
     image: eventease:development
     ports:
-      - 8080:8080
+      - 4000:4000
     env_file:
       - .env
     depends_on:
