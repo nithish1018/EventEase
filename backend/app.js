@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors")
 const userRoutes = require("./routes/userRoutes")
-// const taskRoutes = require("./routes/eventRoutes")
+const eventRoutes = require("./routes/eventRoutes")
 const app = express();
 
 app.use(cors())
@@ -18,7 +18,7 @@ app.get('/pm2Check', (req,res)=>{
 app.get('/check',(req,res)=>{
     res.send("Checking")
 })
-// app.use("/api/event", eventRoutes);
+app.use("/api/event", eventRoutes);
 
 
 

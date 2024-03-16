@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAuthContext } from "../hooks/useAuthContext"
+import { useAuthContext } from "../hooks/useAuthContext";
+import React from "react";
 
 const EditAppointment = () => {
     const [title, setTitle] = useState('');

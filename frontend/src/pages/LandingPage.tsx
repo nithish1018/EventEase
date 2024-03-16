@@ -1,17 +1,9 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-const LandingPage = () => {
-    console.log("LandingPage component re-rendered");
-    return (
-        <Suspense fallback="loading">
-            <LandingContent />
-        </Suspense>
-    );
-}
 
-const LandingContent = () => {
+const LandingPage = () => {
 
     const { t } = useTranslation()
     return (

@@ -12,14 +12,11 @@ const Signup = () => {
     // const signup: (name: string, email: string, password: string) => Promise<void> = useSignup();
     const navigate = useNavigate();
 
-    const signupData = useSignup();
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        if (typeof signupData[0] === 'function') {
-            await signupData[0](name, email, password);
-        }
-        if (signupData[3]) {
-            navigate("/");
+        await signup(name, email, password)
+        if (success) {
+            navigate("/")
         }
     }
 
