@@ -10,6 +10,9 @@ export default defineConfig({
   }), sentryVitePlugin({
     org: "nithish-p1",
     project: "javascript-react"
+  }), sentryVitePlugin({
+    org: "nithish-p1",
+    project: "wd401-react"
   })],
 
   build: {
