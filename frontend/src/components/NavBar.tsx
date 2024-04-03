@@ -44,14 +44,14 @@ const NavBar = () => {
                     <button onClick={changeLanguage} className="px-3 hover:underline underline-offset-8 transition-all">Change Language</button>
 
                 </div>
-                <button
+                {/* <button
                     type="button"
                     onClick={() => {
                         throw new Error("Sentry Test Error");
                     }}
                 >
                     Break the world
-                </button>
+                </button> */}
 
 
             </nav>

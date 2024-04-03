@@ -5,6 +5,7 @@ import { format } from "date-fns"
 import { Link } from "react-router-dom"
 import React from "react"
 
+
 const MeetingList = ({ selectedDay, selectedDayMeetings }) => {
     return (
         <div className="meeting-list">

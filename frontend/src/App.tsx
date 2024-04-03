@@ -11,6 +11,7 @@ import LandingPage from "./pages/LandingPage";
 import React from "react";
 import "./i18n";
 
+
 const App = () => {
   const { user } = useAuthContext();
   return (

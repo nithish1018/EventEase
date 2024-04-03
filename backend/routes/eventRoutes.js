@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
-        const task = await Event.getTask({ userID: req.user, id: req.params.id })
+        const task = await Event.getTask({ userId: req.user, id: req.params.id })
         return res.json(task)
     } catch (error) {
         console.log(error);
@@ -66,16 +66,16 @@ router.post("/", async (req, res) => {
                 title: req.body.title,
                 startTime: startTime,
                 endTime: endTime,
-                userID: req.user
+                userId: req.user
             })
             return res.status(200).json({ occupied: false, task: task })
         } else {
-            occupiedByName = await Event.getTask({ userID: req.user, id: occupiedBy })
+            occupiedByName = await Event.getTask({ userId: req.user, id: occupiedBy })
             return res.status(400).json({ occupied: true, occupiedBy: occupiedBy, occupiedByName: occupiedByName })
         }
     } catch (error) {
         console.log(error);
-        occupiedByName = await Event.getTask({ userID: req.user, id: occupiedBy })
+        occupiedByName = await Event.getTask({ userId: req.user, id: occupiedBy })
         return res.status(400).json({ occupied: true, occupiedBy: occupiedBy, occupiedByName: occupiedByName })
     }
 })
@@ -84,7 +84,7 @@ router.delete("/:id", async (req, res) => {
     try {
         const status = await Event.removeTask({
             id: req.params.id,
-            userID: req.user
+            userId: req.user
         })
         return res.status(200).json({ success: status === 1 })
     } catch (error) {
@@ -98,7 +98,7 @@ router.put("/:id", async (req, res) => {
         const status = await Event.updateTask({
             title: req.body.title,
             id: req.params.id,
-            userID: req.user
+            userId: req.user
         })
         return res.status(200).json({ success: status === 1 })
     } catch (error) {

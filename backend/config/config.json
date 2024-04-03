@@ -4,7 +4,10 @@
     "password": "1018",
     "database": "EventEase_database_development",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": true
+    }
   },
   "test": {
     "username": "postgres",
@@ -18,6 +21,9 @@
   },
   "production": {
     "use_env_variable": "DATABASE_URL",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": true
+    }
   }
 }

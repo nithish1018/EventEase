@@ -22,6 +22,9 @@ export const useLogin = () => {
         if (!response.ok) {
             setIsLoading(false)
             setError(json.error)
+            console.log("SignIn Failed: ", json.error)
+            throw new Error("Sign In failed");
+
         }
         if (response.ok) {
             localStorage.setItem('user', JSON.stringify(json))

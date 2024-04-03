@@ -16,7 +16,7 @@ const NewAppointment = () => {
 
     const handleOverride = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        fetch(`http://localhost:8080/api/tasks/${error.id}`, {
+        fetch(`http://localhost:4000/api/event/${error.id}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${user.token}`
@@ -26,7 +26,7 @@ const NewAppointment = () => {
             const endDTime = selectedDay + "T" + endTime + ":00.000Z"
             const appointment = { title, startTime: startDTime, endTime: endDTime, userID: 1 };
             setIsPending(true);
-            fetch("http://localhost:8080/api/tasks", {
+            fetch("http://localhost:4000/api/event", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -60,7 +60,7 @@ const NewAppointment = () => {
         const endDTime = selectedDay + "T" + endTime + ":00.000Z"
         const appointment = { title, startTime: startDTime, endTime: endDTime, userID: 1 };
         setIsPending(true);
-        fetch("http://localhost:8080/api/tasks", {
+        fetch("http://localhost:4000/api/event", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react"
 import { useAuthContext } from "../hooks/useAuthContext"
@@ -14,7 +15,7 @@ const DeleteAppointment = () => {
             setError("You must be logged in")
             return
         }
-        fetch(`https://theroutine.onrender.com/api/tasks/${appointmentID}`, {
+        fetch(`http://localhost:4000/api/event/${appointmentID}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${user.token}`

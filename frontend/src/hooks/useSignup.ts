@@ -7,7 +7,7 @@ export const useSignup = () => {
     const [success, setSuccess] = useState(false);
     const { dispatch } = useAuthContext();
 
-    const signup = async (name: string,  email: string, password: string) => {
+    const signup = async (name: string, email: string, password: string) => {
         setIsLoading(true);
         setError(false);
 
@@ -25,6 +25,7 @@ export const useSignup = () => {
             setSuccess(false);
             setIsLoading(false);
             setError(jsonRes.error);
+            throw new Error("Sign Up failed");
         } else {
             localStorage.setItem("user", JSON.stringify(jsonRes))
             dispatch({ type: "LOGIN", payload: jsonRes })
@@ -33,5 +34,5 @@ export const useSignup = () => {
             setIsLoading(false);
         }
     }
-    return {signup, isLoading, error, success};
+    return { signup, isLoading, error, success };
 }

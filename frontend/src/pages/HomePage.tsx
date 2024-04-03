@@ -6,7 +6,7 @@ import useFetch from '../hooks/useFetch'
 
 
 const HomePage = () => {
-    const [meetings, isPending, error] = useFetch("http://localhost:8080/api/tasks")
+    const [meetings, isPending, error] = useFetch("http://localhost:4000/api/event")
 
     return (
         <div className="app">

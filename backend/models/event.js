@@ -23,44 +23,44 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
-    static removeTask({ id, userID }) {
+    static removeTask({ id, userId }) {
       return this.destroy({
         where: {
           id,
-          userID,
+          userId,
         },
       });
     }
 
-    static getTasks(userID) {
+    static getTasks(userId) {
       return this.findAll({
         where: {
-          userID,
+          userId,
         },
         order: [["id", "ASC"]],
       });
     }
 
-    static getTaskAtSlot({ startTime, endTime, userID }) {
+    static getTaskAtSlot({ startTime, endTime, userId }) {
       return this.findOne({
         where: {
           startTime,
           endTime,
-          userID
+          userId
         },
       });
     }
 
-    static getTask({ userID, id }) {
+    static getTask({ userId, id }) {
       return this.findOne({
         where: {
-          userID,
+          userId,
           id,
         },
       });
     }
 
-    static async updateTask({ title, id, userID }) {
+    static async updateTask({ title, id, userId }) {
       return this.update(
         {
           title,
@@ -68,7 +68,7 @@ module.exports = (sequelize, DataTypes) => {
         {
           where: {
             id,
-            userID
+            userId
           },
         }
       );

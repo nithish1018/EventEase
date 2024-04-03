@@ -4,6 +4,7 @@ import App from './App.tsx'
 import './index.css'
 import "./i18n";
 import * as Sentry from "@sentry/react";
+import { AuthContextProvider } from "./context/AuthContext";
 
 
 
@@ -27,6 +28,10 @@ Sentry.init({
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
+      <AuthContextProvider>
+        <App />
+      </AuthContextProvider>
+    </Sentry.ErrorBoundary>,
   </React.StrictMode>,
 )

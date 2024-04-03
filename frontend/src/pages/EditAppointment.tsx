@@ -19,7 +19,7 @@ const EditAppointment = () => {
         }
         const appointment = { title, id: appointmentID, userID: 1 };
         setIsPending(true);
-        fetch(`https://theroutine.onrender.com/api/tasks/${appointmentID}`, {
+        fetch(`http://localhost:4000/api/event/${appointmentID}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
