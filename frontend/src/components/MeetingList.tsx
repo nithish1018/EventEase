@@ -34,6 +34,8 @@ const MeetingList = ({ selectedDay, selectedDayMeetings }) => {
                         </div>
                     )}
                 </ol>
+                <p>use natural language to schedule a event</p>
+                
             </section>
         </div>
     );

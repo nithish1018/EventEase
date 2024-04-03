@@ -10,6 +10,7 @@ const NewAppointment = () => {
     const [isPending, setIsPending] = useState(false);
     const [error, setError] = useState(null);
     const [override, setOverride] = useState(false);
+    const [prompt, setPrompt] = useState('')
     const navigate = useNavigate();
     const { user } = useAuthContext();
     const { selectedDay } = useParams();
@@ -100,7 +101,16 @@ const NewAppointment = () => {
                 <input value={startTime} onChange={(e) => { setStartTime(e.target.value) }} required type="time" id="startTime" className="border border-black hover:border-purple-500 focus:border-purple-500 w-full h-5 px-3 py-5 mb-2 hover:outline-none focus:outline-none focus:ring-purple-500 focus:ring-1 rounded-md text-black " />
                 <label htmlFor="endTime">End Time: </label>
                 <input value={endTime} onChange={(e) => { setEndTime(e.target.value) }} required type="time" id="endTime" className="border border-black hover:border-purple-500 focus:border-purple-500 w-full h-5 px-3 py-5 mb-2 hover:outline-none focus:outline-none focus:ring-purple-500 focus:ring-1 rounded-md text-black " />
+
                 {!isPending && !override && <button className=" text-purple-800 transition-all w-full border border-purple-400 hover:bg-purple-400 hover:text-white py-3 rounded-md mt-6">Add appointment</button>}
+                {override && <button onClick={handleOverride} className=" text-purple-800 transition-all w-full border border-purple-400 hover:bg-purple-400 hover:text-white py-3 rounded-md mt-6">Override appointment</button>}
+                {isPending && <button disabled className="transition-all w-full border border-purple-400 bg-purple-400 cursor-not-allowed text-white py-3 rounded-md mt-6">Adding appointment...</button>}
+            </form>
+            <span className="pb-2 mb-2">OR</span>
+            <form>
+                <label htmlFor="chatgpt">Use Natural Language To Schedule An Event / Appointment </label>
+                <input onChange={(e) => { setPrompt(e.target.value) }} required type="text" id="chatgpt" className="border border-black hover:border-purple-500 focus:border-purple-500 w-full h-5 px-3 py-5 mb-2 hover:outline-none focus:outline-none focus:ring-purple-500 focus:ring-1 rounded-md text-black mt-3 " placeholder="Meet Principal from Tomorrow 9:30AM To 12PM" />
+                {!isPending && !override && <button className=" text-purple-800 transition-all w-full border border-purple-400 hover:bg-purple-400 hover:text-white py-3 rounded-md mt-3">Auto Generate Appointment</button>}
                 {override && <button onClick={handleOverride} className=" text-purple-800 transition-all w-full border border-purple-400 hover:bg-purple-400 hover:text-white py-3 rounded-md mt-6">Override appointment</button>}
                 {isPending && <button disabled className="transition-all w-full border border-purple-400 bg-purple-400 cursor-not-allowed text-white py-3 rounded-md mt-6">Adding appointment...</button>}
             </form>
