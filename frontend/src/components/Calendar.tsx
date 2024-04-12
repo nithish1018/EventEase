@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid'
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useTranslation } from "react-i18next";
 import MeetingList from './MeetingList'
 import {
   add,
@@ -44,6 +45,7 @@ function classNames(...classes: string[]) {
 }
 
 const Calender = ({ meetings }) => {
+  const { t } = useTranslation()
   let today = startOfToday()
   let [selectedDay, setSelectedDay] = useState(today)
   let [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'))
@@ -72,7 +74,7 @@ const Calender = ({ meetings }) => {
   return (
     <div className="pt-5">
       <div className="max-w-md px-4 mx-auto sm:px-7 md:max-w-4xl md:px-6">
-        <span className='text-3xl font-extrabold leading-none tracking-tight'>Hello, {user.name}</span>
+        <span className='text-3xl font-extrabold leading-none tracking-tight'>{t("Hello")}, {user.name}</span>
         <div className="mt-8 md:grid md:grid-cols-2 md:divide-x md:divide-gray-200">
 
           <div className="md:pr-14">
