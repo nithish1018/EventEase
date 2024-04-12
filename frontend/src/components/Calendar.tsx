@@ -39,7 +39,7 @@ let colStartClasses = [
   'col-start-7',
 ]
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 

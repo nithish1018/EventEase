@@ -12,7 +12,7 @@
   "dependencies": {
     "@heroicons/react": "^1.0.6",
     "@sentry/react": "^7.107.0",
-    "@sentry/vite-plugin": "^2.15.0",
+    "@sentry/vite-plugin": "^2.16.1",
     "date-fns": "^3.4.0",
     "heroicons": "^2.1.1",
     "i18next": "^23.10.1",

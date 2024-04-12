@@ -21,7 +21,18 @@
         "powerful": "poderoso",
         "appointment": "cita",
         "app": "aplicación",
-        "signin": "iniciar sesión",
-        "signup": "registrarse"
+        "Sign In": "iniciar sesión",
+        "Sign Up": "registrarse",
+        "Sign out": "Cerrar sesión",
+        "Change Language": "Cambiar Idioma",
+        "No": "No",
+        "appointments": "citas",
+        "are": "están",
+        "scheduled": "programadas",
+        "Create": "Crear",
+        "new": "nueva",
+        "New": "Nuevo",
+        "Schedule": "Programar",
+        "for": "para"
     }
 }

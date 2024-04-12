@@ -32,6 +32,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <AuthContextProvider>
         <App />
       </AuthContextProvider>
+
     </Sentry.ErrorBoundary>,
   </React.StrictMode>,
 )

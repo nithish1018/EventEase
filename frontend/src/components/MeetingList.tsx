@@ -4,22 +4,24 @@ import { PlusIcon } from '@heroicons/react/solid'
 import { format } from "date-fns"
 import { Link } from "react-router-dom"
 import React from "react"
+import { useTranslation } from "react-i18next";
 
 
 const MeetingList = ({ selectedDay, selectedDayMeetings }) => {
+    const { t } = useTranslation()
     return (
         <div className="meeting-list">
             <section className="mt-12 md:mt-0 md:pl-14">
                 <div className="flex justify-between items-center">
                     <h2 className="font-semibold text-gray-900">
-                        Schedule for{' '}
+                        {t("Schedule")} {t("for")}{' '}
                         <time dateTime={format(selectedDay, 'yyyy-MM-dd')}>
                             {format(selectedDay, 'MMM dd, yyy')}
                         </time>
                     </h2>
                     <Link to={`/new/${format(selectedDay, 'yyyy-MM-dd')}`} className="flex gap-2 items-center text-purple-600 font-semibold hover:underline underline-offset-8">
                         <PlusIcon className="w-4 h-4" />
-                        New
+                        {t("New")}
                     </Link>
                 </div>
                 <ol className="mt-4 space-y-1 text-sm leading-6 text-gray-500">
@@ -29,12 +31,11 @@ const MeetingList = ({ selectedDay, selectedDayMeetings }) => {
                         ))
                     ) : (
                         <div className="empty-list">
-                            <p>No appointments are scheduled.</p>
-                            <Link to={`/new/${format(selectedDay, 'yyyy-MM-dd')}`} className="text-purple-500 hover:underline">Create new appointment</Link>
+                            <p>{t("No")} {t("appointments")} {t("are")} {t("scheduled")}.</p>
+                            <Link to={`/new/${format(selectedDay, 'yyyy-MM-dd')}`} className="text-purple-500 hover:underline">{t("Create")} {t("new")} {t("appointment")}</Link>
                         </div>
                     )}
                 </ol>
-                <p>use natural language to schedule a event</p>
                 
             </section>
         </div>

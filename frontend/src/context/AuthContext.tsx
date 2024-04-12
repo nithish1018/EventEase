@@ -1,24 +1,40 @@
 import React, { createContext, useReducer, useEffect, ReactNode } from "react";
 
-interface AuthContextProps {
-    user: any;
-    dispatch: React.Dispatch<{ type: string; payload: any }>;
-}
 
-export const AuthContext = createContext<AuthContextProps>({
+interface User {
+    name: string;
+    token: string;
+
+    id: string;
+    email: string;
+}
+type AuthAction = { type: string; payload: User };
+
+interface AuthState {
+    user: User | null;
+}
+const initialState: AuthState = {
     user: null,
-    dispatch: () => { },
+};
+// interface AuthContextProps {
+//     user: any;
+//     dispatch: React.Dispatch<{ type: string; payload: any }>;
+// }
+
+export const AuthContext = createContext<{
+    user: User | null;
+    dispatch: React.Dispatch<AuthAction>;
+}>({
+    user: null,
+    dispatch: () => null,
 });
 
-export const authReducer = (
-    state: { user: any },
-    action: { type: any; payload: any }
-) => {
+const authReducer = (state: AuthState, action: AuthAction): AuthState => {
     switch (action.type) {
         case "LOGIN":
-            return { user: action.payload };
+            return { ...state, user: action.payload };
         case "LOGOUT":
-            return { user: null };
+            return { ...state, user: null };
         default:
             return state;
     }
@@ -29,21 +45,20 @@ interface AuthContextProviderProps {
 }
 
 export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
-    const [state, dispatch] = useReducer(authReducer, {
-        user: null,
-    });
+    const [state, dispatch] = useReducer(authReducer, initialState);
 
+  
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem("user") ?? "");
-        if (user) {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            const user: User = JSON.parse(storedUser);
             dispatch({ type: "LOGIN", payload: user });
         }
     }, []);
 
     return (
-        <AuthContext.Provider value= {{ ...state, dispatch }
-}>
-    { children }
-    </AuthContext.Provider>
-  );
+        <AuthContext.Provider value={{ user: state.user, dispatch }}>
+            {children}
+        </AuthContext.Provider>
+    );
 };

@@ -5,12 +5,13 @@ export default defineConfig({
   build: {
     sourcemap: true, // Source map generation must be turned on
   },
-  plugins: [
-    // Put the Sentry vite plugin after all other plugins
-    sentryVitePlugin({
-      authToken: process.env.SENTRY_AUTH_TOKEN,
-      org: "nithish-p1",
-      project: "wd401-react",
-    }),
-  ],
+  plugins: [// Put the Sentry vite plugin after all other plugins
+  sentryVitePlugin({
+    authToken: process.env.SENTRY_AUTH_TOKEN,
+    org: "nithish-p1",
+    project: "wd401-react",
+  }), sentryVitePlugin({
+    org: "nithish-p1",
+    project: "wd401-react"
+  })],
 });

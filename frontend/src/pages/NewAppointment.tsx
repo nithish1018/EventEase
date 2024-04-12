@@ -10,10 +10,14 @@ const NewAppointment = () => {
     const [isPending, setIsPending] = useState(false);
     const [error, setError] = useState(null);
     const [override, setOverride] = useState(false);
+    const [gptError, setGptError] = useState(null)
     const [prompt, setPrompt] = useState('')
+
+    console.log(prompt)
     const navigate = useNavigate();
     const { user } = useAuthContext();
     const { selectedDay } = useParams();
+
 
     const handleOverride = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
@@ -41,6 +45,7 @@ const NewAppointment = () => {
                 if (result.occupied === false) {
                     navigate("/");
                 } else {
+
                     if (result.occupied && result.occupiedBy) {
                         setOverride(true)
                         setError(result.occupiedByName)
@@ -53,6 +58,38 @@ const NewAppointment = () => {
                 console.log(err);
             })
         });
+    }
+    const autoGenerate = async (e) => {
+        e.preventDefault();
+        await fetch('http://localhost:4000/api/event/autoGenerate', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${user.token}`
+            },
+            body: JSON.stringify({ prompt: prompt })
+
+        }).then(async (res) => {
+            const result = await res.json()
+            setIsPending(false);
+            if (result.occupied === false) {
+                navigate("/");
+            } else {
+                if (result.gptError) {
+                    setGptError(result.gptError);
+                    return ;
+                }
+                if (result.occupied && result.occupiedBy) {
+                    setOverride(true)
+                    setError(result.occupiedByName)
+                } else {
+                    setOverride(false)
+                    setError("The start time cannot be same or greater than end time")
+                }
+            }
+        }).catch((err) => {
+            console.log(err);
+        })
     }
 
     const handleSubmit = (e) => {
@@ -94,6 +131,8 @@ const NewAppointment = () => {
             {error && !override && <div className="my-2 w-full bg-purple-200 rounded-md px-2 py-1 text-purple-900 border border-purple-900 ">{error}</div>}
             {error && override && <div className="my-2 w-full bg-purple-200 rounded-md px-2 py-1 text-purple-900 border border-purple-900 ">The slot is already occupied by "{error.title}" <br /> from {new Date(error.startTime).toUTCString()} to {new Date(error.endTime).toUTCString()}</div>}
             {error && override && <div className="my-2 w-full bg-purple-200 rounded-md px-2 py-1 text-purple-900 border border-purple-900 ">Do you want to override the Appointment?</div>}
+            {gptError && <div className="my-2 w-full bg-purple-200 rounded-md px-2 py-1 text-purple-900 border border-purple-900 ">{gptError}</div>}
+
             <form className="flex flex-col my-8" onSubmit={handleSubmit}>
                 <label htmlFor="title">Title: </label>
                 <input value={title} onChange={(e) => { setTitle(e.target.value) }} required type="text" id="title" className="border border-black hover:border-purple-500 focus:border-purple-500 w-full h-5 px-3 py-5 mb-2 hover:outline-none focus:outline-none focus:ring-purple-500 focus:ring-1 rounded-md text-black " />
@@ -107,7 +146,7 @@ const NewAppointment = () => {
                 {isPending && <button disabled className="transition-all w-full border border-purple-400 bg-purple-400 cursor-not-allowed text-white py-3 rounded-md mt-6">Adding appointment...</button>}
             </form>
             <span className="pb-2 mb-2">OR</span>
-            <form>
+            <form className="flex flex-col my-8" onSubmit={autoGenerate}>
                 <label htmlFor="chatgpt">Use Natural Language To Schedule An Event / Appointment </label>
                 <input onChange={(e) => { setPrompt(e.target.value) }} required type="text" id="chatgpt" className="border border-black hover:border-purple-500 focus:border-purple-500 w-full h-5 px-3 py-5 mb-2 hover:outline-none focus:outline-none focus:ring-purple-500 focus:ring-1 rounded-md text-black mt-3 " placeholder="Meet Principal from Tomorrow 9:30AM To 12PM" />
                 {!isPending && !override && <button className=" text-purple-800 transition-all w-full border border-purple-400 hover:bg-purple-400 hover:text-white py-3 rounded-md mt-3">Auto Generate Appointment</button>}
