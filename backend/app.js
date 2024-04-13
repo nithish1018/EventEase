@@ -10,7 +10,7 @@ app.use(cors())
 
 app.use(express.json());
 const openai=new OpenAI({
-    apiKey:process.env['OPENAI_AIP_KEY']
+    apiKey:process.env['OPENAI_API_KEY']
  })
 
  const systemPrompt=
