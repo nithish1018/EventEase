@@ -16,6 +16,7 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.DB_PWD }}
           POSTGRES_DB: EventEase_database_test
           SECRET: ${{ secrets.SECRET }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
