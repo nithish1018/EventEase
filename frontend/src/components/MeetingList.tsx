@@ -1,12 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import MeetingCard from "./MeetingCard"
+
 import { PlusIcon } from '@heroicons/react/solid'
 import { format } from "date-fns"
 import { Link } from "react-router-dom"
-import React from "react"
+import React from "react";
 import { useTranslation } from "react-i18next";
-
-
+import MeetingCard from './MeetingCard';
 const MeetingList = ({ selectedDay, selectedDayMeetings }) => {
     const { t } = useTranslation()
     return (
@@ -28,6 +27,7 @@ const MeetingList = ({ selectedDay, selectedDayMeetings }) => {
                     {selectedDayMeetings.length > 0 ? (
                         selectedDayMeetings.map((meeting) => (
                             <MeetingCard meeting={meeting} key={meeting.id} />
+
                         ))
                     ) : (
                         <div className="empty-list">
@@ -36,7 +36,7 @@ const MeetingList = ({ selectedDay, selectedDayMeetings }) => {
                         </div>
                     )}
                 </ol>
-                
+
             </section>
         </div>
     );

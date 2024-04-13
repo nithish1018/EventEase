@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
-import react from "react";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({

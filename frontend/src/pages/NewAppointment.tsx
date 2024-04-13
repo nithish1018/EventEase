@@ -61,6 +61,7 @@ const NewAppointment = () => {
     }
     const autoGenerate = async (e) => {
         e.preventDefault();
+        setIsPending(true);
         await fetch('http://localhost:4000/api/event/autoGenerate', {
             method: "POST",
             headers: {

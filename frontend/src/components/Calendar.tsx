@@ -2,7 +2,8 @@ import React from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid'
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useTranslation } from "react-i18next";
-import MeetingList from './MeetingList'
+const MeetingList = React.lazy(() => import('./MeetingList'))
+
 import {
   add,
   eachDayOfInterval,
