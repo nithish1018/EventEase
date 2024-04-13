@@ -95,16 +95,16 @@ router.post("/autoGenerate", async (req, res) => {
     const endTime= new Date(argumentsObject.endsAt) 
     const title= argumentsObject.text
 
-    if(!argumentsObject.startsAt){
+    if(!argumentsObject.text || argumentsObject.text===false){
+        return res.status(400).json({ gptError: "Title of the event is missing in the given text" })
+
+    }
+    if(!argumentsObject.startsAt || argumentsObject.startsAt===false){
         return res.status(400).json({ gptError: "Start Time is missing in the given text" })
 
     }
-    if(!argumentsObject.endsAt){
+    if(!argumentsObject.endsAt || argumentsObject.endsAt===false){
         return res.status(400).json({ gptError: "End Time is missing in the given text" })
-
-    }
-    if(!argumentsObject.text){
-        return res.status(400).json({ gptError: "Title of the event is missing in the given text" })
 
     }
 
