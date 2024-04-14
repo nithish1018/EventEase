@@ -1,9 +1,7 @@
+require("dotenv").config()
 const request = require("supertest");
 const db = require("../models/index");
 const app = require("../app");
-
-
-
 describe("Event Ease test cases", () => {
   beforeAll(async () => {
     server = app.listen(4040, () => {});
