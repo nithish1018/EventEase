@@ -10,6 +10,7 @@ const Signup = () => {
     const [password, setPassword] = useState('');
     const {signup, isLoading, error, success} = useSignup();
     const navigate = useNavigate();
+    const flag=false;
 
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
