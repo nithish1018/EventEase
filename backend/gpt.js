@@ -8,11 +8,10 @@ const openai=new OpenAI({
  "You are an assistant helping a user manage their meetings and events list. " +
  "Given a message , you should extract event or meeting item from it. " +
  "The user may provide a start time and end time along with the event item. " +
- "If the user didn't provide neither proper text or startsAt or endsAt content then return false in those fields. " +
+ "If the user didn't provide neither proper text or startsAt or endsAt content then strictly return undefine in those fields. " +
  "To compute relatives dates, assume that the current timestamp is " +
  new Date().toISOString() +
  ". ";
-
  async function askChatGPT(question){
     try{
         const chatCompletion= await openai.chat.completions.create({
